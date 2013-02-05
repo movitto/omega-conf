@@ -1,0 +1,110 @@
+#!/bin/sh
+#
+# omega-server   Omega Simulation Server
+# chkconfig: 345 90 60
+# description: omega-server is primary server executable for the \
+#             Omega simulation framework
+
+### BEGIN INIT INFO
+# Provides: omega-server
+# Required-Start:
+# Required-Stop:
+# Default-Start: 3 5
+# Default-Stop: 0 1 2 6
+# Short-Description: Omega simulation server
+# Description: Omega provide a universal simulation framework \
+#   accessible over json-rpc
+### END INIT INFO
+
+. /etc/rc.d/init.d/functions
+
+[ -r /etc/sysconfig/omega-server ] && . /etc/sysconfig/omega-server
+
+exec="/usr/bin/omega-server"
+prog="omega-server"
+
+[ ! -d /var/log/$prog ] && mkdir -p /var/log/$prog && chown omega.omega /var/log/$prog
+
+# You can overide these variables using /etc/sysconfig/omega-server
+RUBYLIB="/usr/share/omega/lib"
+OMEGA_USER="${OMEGA_USER:-omega}"
+LOGFILE="${LOGFILE:-/var/log/$prog/$prog.log}"
+LOCKFILE="${LOCKFILE:-/var/lock/subsys/$prog}"
+PIDFILE="${PIDFILE:-/var/run/$prog.pid}"
+
+[ -r $LOGFILE ]  && chown $OMEGA_USER $LOGFILE
+[ -r $LOCKFILE ] && chown $OMEGA_USER $LOCKFILE
+
+start() {
+    [ -x $exec ] || exit 5
+
+    echo -n "Starting $exec: "
+    # sudo here requires 'requiretty' option to be disabled in sudoers
+    # TODO support in process daemon mode instead of using '&'
+    sudo -u $OMEGA_USER RJR_LOG=$LOGFILE RUBYLIB=$RUBYLIB $exec &
+    echo $! > $PIDFILE
+    retval=$?
+    sleep 1
+
+    if [ $retval -eq 0 ] && touch $LOCKFILE ; then
+      echo_success
+      echo
+    else
+      echo_failure
+      echo
+    fi
+    return $retval
+}
+
+stop() {
+    echo -n "Shutting down $prog: "
+    if [ -f $PIDFILE ]; then
+      kill -TERM `cat $PIDFILE` 
+
+      # XXX requires a 2nd kill after a short delay
+      sleep 1
+      kill -TERM `cat $PIDFILE`
+
+      retval=$?
+      if [ $retval -eq 0 ] && rm -f $LOCKFILE $PIDFILE; then
+        echo_success
+        echo
+      else
+        echo_failure
+        echo
+      fi
+      return $retval
+    else
+      echo_failure
+      echo
+      return 1
+    fi
+}
+
+case "$1" in
+    start)
+      start
+      ;;
+    stop)
+      stop
+      ;;
+    restart)
+      stop
+      start
+      ;;
+    reload)
+      ;;
+    force-reload)
+      restart
+      ;;
+    status)
+      status -p $PIDFILE $prog
+      retval=$?
+      ;;
+    *)
+      echo "Usage: $prog {start|stop|restart|status}"
+      exit 1
+  ;;
+esac
+
+exit $retval
