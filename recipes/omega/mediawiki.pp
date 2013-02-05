@@ -28,12 +28,18 @@ define expand_tarball($dest) {
             ensure => 'installed',
             provider => 'yum' }
 
+  service{'httpd':
+          ensure  => 'running',
+          enable => true }
+
+
 ### Setup the mediawiki db
 
      file {'/etc/httpd/conf.d/mediawiki.conf':
-           source => "$omega_private_release/httpd.conf",
+           source => "$omega_private_release/mediawiki.conf",
            ensure => "file",
-           require => Package['httpd']}
+           require => Package['httpd'],
+           notify => Service['httpd']}
 
      file { '/usr/share/mediawiki/omega':
             ensure => 'directory',
@@ -78,7 +84,7 @@ define expand_tarball($dest) {
           ensure => "file" }
 
     expand_tarball{'/var/www/mediawiki-www.tgz':
-                   dest  => '/var/www/wiki/',
+                   dest  => '/var/www/',
                    require => [Package['mediawiki'],
                                File['/var/www/mediawiki-www.tgz']] }
 

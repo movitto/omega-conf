@@ -38,13 +38,16 @@ define expand_tarball($dest) {
             provider => 'rpm',
             require => Package['rubygem-json',
                                'rubygem-curb',
-                               'rubygem-eventmachine'] }
+                               'rubygem-eventmachine',
+                               'em-websocket',
+                               'eventmachine_httpserver',
+                               'amqp'] }
 
   package {"omega":
             source => "$omega_hosted_release/omega.rpm",
             ensure => 'installed',
             provider => 'rpm',
-            require => Package['rubygem-rjr', 'rubygem-activesupport'] }
+            require => Package['rubygem-rjr', 'rubygem-activesupport', 'isaac'] }
 
   package {"omega-doc":
             source => "$omega_hosted_release/omega-doc.rpm",
