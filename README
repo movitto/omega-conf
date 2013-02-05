@@ -1,0 +1,5 @@
+This project contains configuration files and helper scripts to
+assist in an omega installation w/ supporting services.
+
+The primary installation mechanism is a puppet recipe which sets up
+omega along w/ all required components

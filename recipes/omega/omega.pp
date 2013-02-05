@@ -1,7 +1,6 @@
 # Main Omega Puppet Recipe
 
-#$omega_hosted_release  = 'http://github.com/movitto/omega-conf/release';
-$omega_hosted_release  = 'http://projects.morsi.org/omega/public'
+$omega_hosted_release  = 'http://github.com/movitto/omega-conf/release';
 $omega_private_release = 'puppet:///modules/omega/private'
 $omega_public_release  = 'puppet:///modules/omega/public'
 
