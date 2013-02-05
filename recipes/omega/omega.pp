@@ -1,6 +1,6 @@
 # Main Omega Puppet Recipe
 
-$omega_hosted_release  = 'http://github.com/movitto/omega-conf/release';
+$omega_hosted_release  = 'http://raw.github.com/movitto/omega-conf/master/release'
 $omega_private_release = 'puppet:///modules/omega/private'
 $omega_public_release  = 'puppet:///modules/omega/public'
 
@@ -14,6 +14,8 @@ $omega_public_release  = 'puppet:///modules/omega/public'
 #   $omega_public_release/omega.conf
 #   $omega_public_release/iptables
 #   $omega_public_release/static-site.tgz
+#
+#   Set $omega_private_release to null to skip over mediawiki instantiation
 #
 #   $omega_private_release/omega.yml
 #   $omega_private_release/setup-mw-db.mysql
@@ -137,15 +139,18 @@ define expand_tarball($dest) {
 ### Setup the mediawiki db
 
    if($omega_private_release){
-     file {'/usr/share/omega/examples/setup-mw-db.mysql':
+     file { '/usr/share/mediawiki/omega':
+            ensure => 'directory',
+            require => Package['mediawiki'] }
+     file {'/usr/share/mediawiki/omega/setup-mw-db.mysql':
            source => "$omega_private_release/setup-mw-db.mysql",
            ensure => "file",
-           require => Package["omega-doc"]}
+           require => File["/usr/share/mediawiki/omega"]}
 
-     file {'/usr/share/omega/examples/latest-mw-db.mysql':
+     file {'/usr/share/mediawiki/omega/latest-mw-db.mysql':
            source => "$omega_private_release/latest-mw-db.mysql",
            ensure => "file",
-           require => Package["omega-doc"]}
+           require => File["/usr/share/mediawiki/omega"]}
 
     service{'mysqld':
             ensure  => 'running',
@@ -158,14 +163,14 @@ define expand_tarball($dest) {
     #     require => Service['mysqld']}
 
     exec{'create_mediawiki_db':
-         command => '/usr/bin/mysql -u root < /usr/share/omega/examples/setup-mw-db.mysql',
+         command => '/usr/bin/mysql -u root < /usr/share/mediawiki/omega/setup-mw-db.mysql',
          unless  => '/usr/bin/test "`/usr/bin/mysql -u root -e \"show databases\" | grep wikidb`" != ""',
-         require => [Service['mysqld'], File['/usr/share/omega/examples/setup-mw-db.mysql']]}
+         require => [Service['mysqld'], File['/usr/share/mediawiki/omega/setup-mw-db.mysql']]}
 
     exec{'seed_mediawiki_db':
-         command => '/usr/bin/mysql -u root wikidb < /usr/share/omega/examples/latest-mw-db.mysql',
+         command => '/usr/bin/mysql -u root wikidb < /usr/share/mediawiki/omega/latest-mw-db.mysql',
          unless  => '/usr/bin/test "`/usr/bin/mysql -u root wikidb -e \"show tables\" | grep page`" != ""',
-         require => [Service['mysqld'], Exec['create_mediawiki_db'], File['/usr/share/omega/examples/latest-mw-db.mysql']]}
+         require => [Service['mysqld'], Exec['create_mediawiki_db'], File['/usr/share/mediawiki/omega/latest-mw-db.mysql']]}
 
 ### Setup mediawiki installation
 
@@ -263,7 +268,7 @@ define expand_tarball($dest) {
     exec{'seed_omega_universe':
          command => '/usr/share/omega/examples/environment.rb',
          environment => 'RUBYLIB=/usr/share/omega/lib',
-         require => Service['omega-server']}
+         require => [Service['omega-server'], Package['omega-doc']]}
          #unless  => ''}
 
     #exec{'/usr/share/omega/examples/users.rb Anubis sibuna Athena regular_user':
