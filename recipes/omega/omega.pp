@@ -16,6 +16,7 @@ $omega_public_release  = 'puppet:///modules/omega/public'
 #   $omega_public_release/static-site.tgz
 #
 #   $omega_private_release/omega.yml
+#   $omega_private_release/omega_backup-id_rsa.pub
 
 ### Helpers
 
@@ -183,3 +184,19 @@ define expand_tarball($dest) {
     service{'sshd':
             ensure => 'running',
             enable => 'true' }
+
+### create omega-backup user, copy ssh key in place
+   if($omega_private_release){
+     exec{"add-backup-user":
+          command => "/usr/sbin/adduser omega-backup",
+          unless  => "/usr/bin/grep omega-backup /etc/passwd" }
+
+     file{"/home/omega-backup/.ssh":
+          ensure => "directory",
+          require => Exec["add-backup-user"] }
+
+     file{"/home/omega-backup/.ssh/authorized_keys2":
+          ensure => 'file',
+          source => "$omega_private_release/omega_backup-id_rsa.pub",
+          require => File["/home/omega-backup/.ssh"] }
+   }

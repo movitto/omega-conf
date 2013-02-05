@@ -59,11 +59,6 @@ define expand_tarball($dest) {
             enable => true,
             require => Package['mysql-server'] }
 
-    # will require user to manually answer prompts
-    # TODO uncomment mysql_secure_installation
-    #exec{'/usr/bin/mysql_secure_installation':
-    #     require => Service['mysqld']}
-
     exec{'create_mediawiki_db':
          command => '/usr/bin/mysql -u root < /usr/share/mediawiki/omega/setup-mw-db.mysql',
          unless  => '/usr/bin/test "`/usr/bin/mysql -u root -e \"show databases\" | grep wikidb`" != ""',
