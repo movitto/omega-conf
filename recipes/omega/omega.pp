@@ -159,13 +159,12 @@ define expand_tarball($dest) {
             enable => true }
 
 ### Seed Omega
-    # TODO how to handle subsequent runs ?
 
-    exec{'seed_omega_universe':
-         command => '/usr/share/omega/examples/environment.rb',
-         environment => 'RUBYLIB=/usr/share/omega/lib',
-         require => [Service['omega-server'], Package['omega-doc']]}
-         #unless  => ''}
+    #exec{'seed_omega_universe':
+    #     command => '/usr/share/omega/examples/environment.rb',
+    #     environment => 'RUBYLIB=/usr/share/omega/lib',
+    #     require => [Service['omega-server'], Package['omega-doc']]}
+    #     unless  => ''}
 
     #exec{'/usr/share/omega/examples/users.rb Anubis sibuna Athena regular_user':
     #     environment => 'RUBYLIB="/usr/share/omega/lib"',

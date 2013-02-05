@@ -64,8 +64,6 @@ define expand_tarball($dest) {
          unless  => '/usr/bin/test "`/usr/bin/mysql -u root -e \"show databases\" | grep wikidb`" != ""',
          require => [Service['mysqld'], File['/usr/share/mediawiki/omega/setup-mw-db.mysql']]}
 
-    # TODO how to update an existing db?
-
     exec{'seed_mediawiki_db':
          command => '/usr/bin/mysql -u root wikidb < /usr/share/mediawiki/omega/latest-mw-db.mysql',
          unless  => '/usr/bin/test "`/usr/bin/mysql -u root wikidb -e \"show tables\" | grep page`" != ""',
