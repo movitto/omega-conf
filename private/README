@@ -1,0 +1,4 @@
+Add files containing sensitive / private data here to be automatically picked up
+by the installer/configuration tool (for example omega.yml with custom passwords and such).
+
+See the various puppet recipes for the files which are read from this dir

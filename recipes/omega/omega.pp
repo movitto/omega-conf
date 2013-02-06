@@ -11,12 +11,13 @@ $omega_public_release  = 'puppet:///modules/omega/public'
 #   $omega_hosted_release/omega.rpm
 #   $omega_hosted_release/omega-doc.rpm
 #
-#   $omega_public_release/omega.conf
+#   $omega_public_release/httpd.conf
 #   $omega_public_release/iptables
 #   $omega_public_release/static-site.tgz
 #
 #   $omega_private_release/omega.yml
 #   $omega_private_release/omega_backup-id_rsa.pub
+#   $omega_private_release/omega.js
 
 ### Helpers
 
@@ -86,11 +87,16 @@ define expand_tarball($dest) {
                   dest  => '/var/www/',
                   require => File['/var/www/omega.tgz'] }
 
+   file { '/var/www/omega/javascripts/omega/config.js':
+          source => "$omega_private_release/omega.js",
+          ensure => "file",
+          require => Expand_tarball["/var/www/omega.tgz"]}
+
    file {'/var/www/omega':
          ensure => 'directory',
          owner  => 'apache',
          group  => 'apache',
-         require => Expand_tarball['/var/www/omega.tgz']}
+         require => [Expand_tarball['/var/www/omega.tgz'], File["/var/www/omega/javascripts/omega/config.js"]]}
 
    exec{'omega_www_perms':
         command => '/usr/bin/chmod -R -w,g-w  /var/www/omega',
