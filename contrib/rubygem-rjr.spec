@@ -14,7 +14,7 @@ BuildArch:     noarch
 
 Requires:      ruby(rubygems)
 Requires:      ruby(abi) = %{rubyabi}
-Requires:      rubygem(eventmachine)
+Requires:      rubygem(eventmachine) = 0.12.10
 Requires:      rubygem(json)
 Requires:      rubygem(curb)
 BuildRequires: ruby(rubygems)
