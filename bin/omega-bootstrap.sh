@@ -3,7 +3,7 @@
 echo "Installing bootstrap dependencies and checking out components"
 echo "This may take a few minutes to complete"
 
-yum install git puppet
+yum -y install git puppet
 git clone http://github.com/movitto/omega-conf
 cd omega-conf
 
