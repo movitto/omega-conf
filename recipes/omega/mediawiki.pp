@@ -1,5 +1,6 @@
 # Omega Puppet Mediawiki Configuration
 
+$selinux_enabled       = true
 $omega_private_release = 'puppet:///modules/omega/private'
 
 #   Set $omega_private_release to null to skip over mediawiki instantiation
@@ -121,12 +122,14 @@ define expand_tarball($dest) {
           mode   => '0400',
           require => Expand_tarball['/var/www/mediawiki-www.tgz']}
 
-    exec{'mediawiki_www_context':
-         command => '/usr/bin/chcon -v --type=httpd_mediawiki_rw_content_t \
-                 /var/www/wiki/LocalSettings.php /var/www/wiki/upload-content.php',
-         require => File['/var/www/wiki/LocalSettings.php',
-                         '/var/www/wiki/upload-content.php'] }
+   if($selinux_enabled){
+     exec{'mediawiki_www_context':
+          command => '/usr/bin/chcon -v --type=httpd_mediawiki_rw_content_t \
+                  /var/www/wiki/LocalSettings.php /var/www/wiki/upload-content.php',
+          require => File['/var/www/wiki/LocalSettings.php',
+                          '/var/www/wiki/upload-content.php'] }
 
-    exec{'mediawiki_share_context':
-         command => '/usr/bin/chcon -v -R --type=httpd_mediawiki_content_t /usr/share/mediawiki/extensions/',
-         require => File['/usr/share/mediawiki/extensions'] }
+     exec{'mediawiki_share_context':
+          command => '/usr/bin/chcon -v -R --type=httpd_mediawiki_content_t /usr/share/mediawiki/extensions/',
+          require => File['/usr/share/mediawiki/extensions'] }
+   }

@@ -1,5 +1,6 @@
 # Main Omega Puppet Recipe
 
+$selinux_enabled       = true
 $omega_hosted_release  = 'http://raw.github.com/movitto/omega-conf/master/release'
 $omega_private_release = 'puppet:///modules/omega/private'
 $omega_public_release  = 'puppet:///modules/omega/public'
@@ -60,7 +61,8 @@ define expand_tarball($dest) {
 ### Install rjr dependencies
   package {['ruby-devel',
             'openssl-devel',
-            'gcc-c++']:
+            'gcc-c++',
+            'make']:
             ensure => 'installed',
             provider => 'yum' }
 
@@ -70,7 +72,7 @@ define expand_tarball($dest) {
             'eventmachine_httpserver']:
             ensure => 'installed',
             provider => 'gem',
-            require  => Package['ruby-devel', 'openssl-devel', 'gcc-c++']}
+            require  => Package['ruby-devel', 'openssl-devel', 'gcc-c++', 'make']}
 
 ### Install omega dependencies
   package {['rabbitmq-server',
@@ -102,9 +104,11 @@ define expand_tarball($dest) {
         command => '/usr/bin/chmod -R -w,g-w  /var/www/omega',
         require => [File['/var/www/omega'], Package['httpd']] }
 
-   exec{'omega_www_context':
-        command => '/usr/bin/chcon -R -v --type=httpd_sys_content_t /var/www/omega',
-        require => [File['/var/www/omega'], Package['httpd']] }
+   if($selinux_enabled){
+     exec{'omega_www_context':
+          command => '/usr/bin/chcon -R -v --type=httpd_sys_content_t /var/www/omega',
+          require => [File['/var/www/omega'], Package['httpd']] }
+   }
 
 ### Configure omega deps, start omega services
    exec{"disable_sudo_requiretty":
@@ -143,22 +147,26 @@ define expand_tarball($dest) {
          ensure => "file",
          require => Package['httpd']}
 
-    exec{'http_omega_conf_context':
-         command => '/usr/bin/chcon -v --type=httpd_config_t /etc/httpd/conf.d/omega.conf',
-         require => File['/etc/httpd/conf.d/omega.conf'],
-         notify => Service['httpd']}
+   if($selinux_enabled){
+     exec{'http_omega_conf_context':
+          command => '/usr/bin/chcon -v --type=httpd_config_t /etc/httpd/conf.d/omega.conf',
+          require => File['/etc/httpd/conf.d/omega.conf'],
+          notify => Service['httpd']}
 
-    exec{'http_user_content':
-         command => '/usr/sbin/setsebool -P httpd_read_user_content 1',
-         #timeout => 6000,
-         require => Package['httpd'],
-         notify => Service['httpd']}
+     exec{'http_user_content':
+          command => '/usr/sbin/setsebool -P httpd_read_user_content 1',
+          #timeout => 6000,
+          require => Package['httpd'],
+          notify => Service['httpd']}
+   }
 
-    # allow httpd to connect to omega
-    exec{'http_omega_port':
-         command => '/usr/sbin/semanage port -a -t http_port_t -p tcp 8888',
-         unless  => '/usr/bin/test "`/usr/sbin/semanage port -l | grep http_port_t | grep 8888`" != ""',
-         require => [Package['httpd'], Service['httpd']] }
+   if($selinux_enabled){
+     # allow httpd to connect to omega
+     exec{'http_omega_port':
+          command => '/usr/sbin/semanage port -a -t http_port_t -p tcp 8888',
+          unless  => '/usr/bin/test "`/usr/sbin/semanage port -l | grep http_port_t | grep 8888`" != ""',
+          require => [Package['httpd'], Service['httpd']] }
+   }
 
     service{'httpd':
             ensure  => 'running',
