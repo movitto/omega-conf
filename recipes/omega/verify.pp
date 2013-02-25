@@ -1,7 +1,7 @@
 # Recipe to verify omega installation as setup by omega.pp
 
 # Verify required services are running
-  service { ['httpd', 'rabbitmq-server', 'sshd', 'mysqld', 'omega-server']:
+  service { ['httpd', 'rabbitmq-server', 'sshd', 'omega-server']:
             ensure => 'running' } # TODO just verify, do not start
 
 # Install dependencies
@@ -17,16 +17,6 @@
   exec { "verify-omega-www":
          command => '/usr/bin/test "`/usr/bin/grep omega_canvas /tmp/verify-omega-www`" != ""',
          require => Exec['get-omega-www'] }
-
-# verify mediawiki is active and has correct content
-  exec { "get-mediawiki-www":
-         command => '/usr/bin/curl -L http://localhost/wiki/ > /tmp/verify-omega-wiki',
-         require => Package['curl'] }
-
-  # TODO use xpath
-  exec { "verify-mediawiki-www":
-         command => '/usr/bin/test "`/usr/bin/grep "Welcome to.*omegaverse.info" /tmp/verify-omega-wiki`" != ""',
-         require => Exec['get-mediawiki-www'] }
 
 # ensure necessary firewall ports are open and being listended on
   exec { "verify-ssh-port-open":

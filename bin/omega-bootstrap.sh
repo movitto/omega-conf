@@ -11,5 +11,4 @@ echo "Copy private data into private/ directory and press any key to begin insta
 read
 
 puppet apply ./recipes/omega/omega.pp     --modulepath=./recipes
-puppet apply ./recipes/omega/mediawiki.pp --modulepath=./recipes
 puppet apply ./recipes/omega/verify.pp    --modulepath=./recipes

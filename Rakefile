@@ -29,11 +29,6 @@ task 'install' => 'symlinks' do
   system('puppet apply --modulepath=recipes recipes/omega/omega.pp')
 end
 
-desc 'Run the mediawiki installation/configuration process'
-task 'mediawiki' => 'symlinks' do
-  system('puppet apply --modulepath=recipes recipes/omega/mediawiki.pp')
-end
-
 desc 'Verify the installation/configuration process'
 task 'verify' do
   system('puppet apply --modulepath=recipes recipes/omega/verify.pp')
