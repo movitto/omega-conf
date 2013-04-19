@@ -8,9 +8,9 @@ $omega_public_release  = 'puppet:///modules/omega/public'
 # Files
 # This recipe assumes the following files are accessible:
 #
-#   $omega_hosted_release/rubygem-rjr.rpm
 #   $omega_hosted_release/omega.rpm
 #   $omega_hosted_release/omega-doc.rpm
+#   $omega_hosted_release/isaac-0.3.0.gem
 #
 #   $omega_public_release/httpd.conf
 #   $omega_public_release/iptables
@@ -28,29 +28,80 @@ define expand_tarball($dest) {
     cwd => $dest }
 }
 
-### Install omega
-  package {['rubygem-json', 'rubygem-curb', 'rubygem-eventmachine',
-            'rubygem-activesupport']:
+### Install rjr/omega dependencies
+  $all_omega_deps = ['activesupport', 'rjr', 'isaac', 'em-websocket',
+                     'eventmachine_httpserver', 'em-http-request',
+                     'em-websocket-client', 'amqp', 'sourcify', 'pry',
+                     'rubygem-curb']
+
+  package {'activesupport':
+            ensure => 'installed',
+            provider => 'gem'}
+
+  package {'rjr':
+            ensure => 'installed',
+            provider => 'gem',
+            require => Package['ruby-devel', 'openssl-devel', 'gcc-c++', 'make']}
+
+  package {'isaac':
+           ensure => '0.3.0',
+           source => "$omega_hosted_release/isaac-0.3.0.gem",
+           provider => 'gem' }
+
+  package {'em-websocket':
+           ensure => '0.3.8',
+           provider => 'gem',
+           require => Package['rjr']}
+
+  package {'eventmachine_httpserver':
+           ensure => '0.2.1',
+           provider => 'gem',
+           require => Package['rjr']}
+
+  package {'em-http-request':
+           ensure => '1.0.3',
+           provider => 'gem',
+           require => Package['rjr']}
+
+  package {'em-websocket-client':
+           ensure => '0.1.1',
+           provider => 'gem',
+           require => Package['rjr']}
+
+  package {'amqp':
+           ensure => '1.0.1',
+           provider => 'gem',
+           require => Package['rjr']}
+
+  package {'sourcify':
+           ensure => '0.6.0.rc2',
+           provider => 'gem' }
+
+  package {'pry':
+           ensure => '0.9.12',
+           provider => 'gem' }
+
+  package {'json':
+           ensure => '1.7.5',
+           provider => 'gem',
+           require => Package['rjr']}
+
+  package {['ruby-devel',
+            'openssl-devel',
+            'gcc-c++',
+            'make',
+            'rubygem-curb',
+            'rabbitmq-server',
+            'httpd']:
             ensure => 'installed',
             provider => 'yum' }
-            
 
-  package {"rubygem-rjr":
-            source => "$omega_hosted_release/rubygem-rjr.rpm",
-            ensure => 'installed',
-            provider => 'rpm',
-            require => Package['rubygem-json',
-                               'rubygem-curb',
-                               'rubygem-eventmachine',
-                               'em-websocket',
-                               'eventmachine_httpserver',
-                               'amqp'] }
-
+### Install omega & site
   package {"omega":
             source => "$omega_hosted_release/omega.rpm",
             ensure => 'installed',
             provider => 'rpm',
-            require => Package['rubygem-rjr', 'rubygem-activesupport', 'isaac'] }
+            require => Package[$all_omega_deps] }
 
   package {"omega-doc":
             source => "$omega_hosted_release/omega-doc.rpm",
@@ -58,27 +109,6 @@ define expand_tarball($dest) {
             provider => 'rpm',
             require => Package['omega'] }
 
-### Install rjr dependencies
-  package {['ruby-devel',
-            'openssl-devel',
-            'gcc-c++',
-            'make']:
-            ensure => 'installed',
-            provider => 'yum' }
-
-  package {['em-websocket',
-            'isaac',
-            'amqp',
-            'eventmachine_httpserver']:
-            ensure => 'installed',
-            provider => 'gem',
-            require  => Package['ruby-devel', 'openssl-devel', 'gcc-c++', 'make']}
-
-### Install omega dependencies
-  package {['rabbitmq-server',
-            'httpd']:
-            ensure => 'installed',
-            provider => 'yum' }
 
    file {'/var/www/omega.tgz':
          source => "$omega_public_release/static-site.tgz",
@@ -158,9 +188,7 @@ define expand_tarball($dest) {
           #timeout => 6000,
           require => Package['httpd'],
           notify => Service['httpd']}
-   }
 
-   if($selinux_enabled){
      # allow httpd to connect to omega
      exec{'http_omega_port':
           command => '/usr/sbin/semanage port -a -t http_port_t -p tcp 8888',
@@ -170,7 +198,8 @@ define expand_tarball($dest) {
 
     service{'httpd':
             ensure  => 'running',
-            enable => true }
+            enable  => true,
+            require => File['/etc/httpd/conf.d/omega.conf'] }
 
 ### Seed Omega
 

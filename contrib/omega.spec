@@ -2,7 +2,7 @@
 
 Name:    omega
 Summary: Omega Universal simulation framework
-Version: 0.2.0
+Version: 0.3.0
 Release: 1
 Group:   Development/Languages
 License: AGPLv3+
@@ -12,10 +12,10 @@ Source1: http://github.com/movitto/omega/files/%{name}-server.init
 Source2: http://github.com/movitto/omega/files/%{name}-backup.cron
 BuildArch: noarch
 
-Requires: rubygem(rjr)
-Requires: rubygem(activesupport)
 Requires(post):   chkconfig
-BuildRequires: rubygem(rspec)
+Requires:             httpd
+Requires:   rabbitmq-server
+#BuildRequires: rubygem(rspec)
 
 %description
 
@@ -34,7 +34,6 @@ Documentation for %{name}
 cp %{SOURCE1} .
 cp %{SOURCE2} .
 
-
 %build
 
 %install
@@ -45,6 +44,7 @@ mkdir -p %{buildroot}%{_sysconfdir}/cron.d
 mkdir -p %{buildroot}%{_bindir}
 
 cp -r * %{buildroot}%{app_root}
+rm -rf %{buildroot}%{app_root}/vendor
 mv %{buildroot}%{app_root}/omega.yml %{buildroot}%{_sysconfdir}
 mv %{buildroot}/%{app_root}/%{name}-backup.cron %{buildroot}%{_sysconfdir}/cron.d/%{name}-backup
 mv %{buildroot}/%{app_root}/%{name}-server.init %{buildroot}%{_initddir}/%{name}-server
@@ -68,6 +68,7 @@ rm -rf %{buildroot}/%{app_root}/bin
 %{_sysconfdir}/cron.d/%{name}-backup
 %dir %{app_root}/
 %{app_root}/lib
+%{app_root}/tests
 %{app_root}/site2
 %{app_root}/LICENSE
 %{app_root}/COPYING
@@ -89,5 +90,8 @@ rm -rf %{buildroot}/%{app_root}/bin
 %{app_root}/README.md
 
 %changelog
+* Wed Apr 17 2013 Mo Morsi <mo@morsi.org> - 0.3.0-1
+- New Release
+
 * Mon Sep 10 2012 Mo Morsi <mo@morsi.org> - 0.1.0-1
 - Initial package
