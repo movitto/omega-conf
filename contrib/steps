@@ -1,0 +1,44 @@
+Set up fresh system w/ correct hostname (/etc/hosts)
+yum update
+
+scp omega.rpm omega-doc.rpm isaac.gem
+yum install omega omega-doc
+
+Install rjr deps:
+  sudo yum install ruby-devel openssl-devel gcc-c++ make rubygem-curb
+  sudo gem install activesupport
+  #sudo gem install eventmachine-websocket ?
+
+  sudo gem install em-websocket --version 0.3.8
+  sudo gem install eventmachine_httpserver --version 0.2.1
+  sudo gem install em-http-request --verison 1.0.3
+  sudo gem install em-websocket-client --version 0.1.1
+  sudo gem install amqp --version 1.0.1
+  sudo gem install isaac-0.3.0.gem
+  sudo gem install sourcify --version 0.6.0.rc2
+  sudo gem install pry --version 0.9.12
+  sudo gem install json --version 1.7.5
+  sudo gem install rjr
+
+rake site:build (locally - requires gem middleman 3.0.5)
+scp site2/build /var/www/omega
+chown -R apache.apache /var/www/omega
+chmod -R -w /var/www/omega
+chmod -R g-w /var/www/omega
+chcon -R -v --type=httpd_system_content_t /var/www/omega
+
+comment out 'require tty' in sudoers
+
+service rabbitmq-server start
+service omega-server start
+
+install http config file (/etc/http/conf.d/omega.conf)
+service httpd start
+
+change passwords & tcp url in /etc/omega.yml
+RUBYLIB='/usr/share/omega/lib' /usr/share/omega/examples/[environment,universe,complete]
+RUBYLIB='/usr/share/omega/lib' /usr/share/omega/examples user...
+
+setup iptables, run iptables-restore
+
+create omega-backup user & install ssh key

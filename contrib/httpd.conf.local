@@ -1,0 +1,16 @@
+#Alias /womega /home/mmorsi/workspace/omega/site2/build/
+ProxyPreserveHost On
+ProxyPass /womega http://localhost:4567/
+ProxyPassReverse /womega http://localhost:4567/
+
+# when testing omega:
+ProxyPass /omega http://localhost:8888
+ProxyPassReverse /omega http://localhost:8888
+Alias /omega-test /home/mmorsi/workspace/omega/site2/tests/
+Alias /omega-stress /home/mmorsi/workspace/omega/test/harness/
+
+# when testing rjr:
+#Alias /rjr-test /home/mmorsi/workspace/rjr/tests/js/
+#Alias /rjr-stress /home/mmorsi/workspace/rjr/site
+#ProxyPass /rjr http://localhost:8888
+#ProxyPassReverse /rjr http://localhost:8888

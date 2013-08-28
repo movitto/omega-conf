@@ -1,0 +1,35 @@
+Creating Meshes for Omega
+-------------------------
+Omega renderes entities with webgl via three.js which
+uses its own json format for meshes.
+
+An exporter plugin for blender is provided here:
+https://github.com/mrdoob/three.js/tree/master/utils/exporters/blender
+
+On Fedora I placed this in the ~/.config/blender/2.64/ directory
+
+The Vegastrike game ships a bunch of freely available meshes and textures
+which may be imported into blender and converted to the three.js format.
+
+On Fedora I downloaded these via yum:
+# yum install vegastrike-data
+
+The meshes are bxfm files located in the /usr/share/vegastrike dir
+
+To convert:
+- copy locally (important)
+- run: /usr/libexec/vegastrike/mesher ./foo.bxfm foo.obj boc
+  where foo.bxfm is the mesh you copied and foo.obj is the destination
+  obj file to write
+- open blender and file > import foo.obj
+- save the blender project
+- file > export into three.js format (requires plugin above)
+
+Vegastrike textures are in the 'dds' format (even though they
+have a png extension)
+
+Simply copy the file locally to foo.dds and run
+$ convert foo.dds foo.png
+
+Edit which meshes and textures are used in
+site/source/javascripts/omega/config.js
