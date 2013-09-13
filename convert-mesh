@@ -31,5 +31,8 @@ have a png extension)
 Simply copy the file locally to foo.dds and run
 $ convert foo.dds foo.png
 
+This also works for cube-based texture sets:
+$ convert foo.cube foo.png
+
 Edit which meshes and textures are used in
 site/source/javascripts/omega/config.js
