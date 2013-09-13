@@ -10,7 +10,6 @@ $omega_public_release  = 'puppet:///modules/omega/public'
 #
 #   $omega_hosted_release/omega.rpm
 #   $omega_hosted_release/omega-doc.rpm
-#   $omega_hosted_release/isaac-0.3.0.gem
 #
 #   $omega_public_release/httpd.conf
 #   $omega_public_release/iptables
@@ -29,9 +28,9 @@ define expand_tarball($dest) {
 }
 
 ### Install rjr/omega dependencies
-  $all_omega_deps = ['activesupport', 'rjr', 'isaac', 'em-websocket',
+  $all_omega_deps = ['activesupport', 'rjr', 'em-websocket',
                      'eventmachine_httpserver', 'em-http-request',
-                     'em-websocket-client', 'amqp', 'sourcify', 'pry',
+                     'em-websocket-client', 'amqp', 'pry',
                      'rubygem-curb']
 
   package {'activesupport':
@@ -42,11 +41,6 @@ define expand_tarball($dest) {
             ensure => 'installed',
             provider => 'gem',
             require => Package['ruby-devel', 'openssl-devel', 'gcc-c++', 'make']}
-
-  package {'isaac':
-           ensure => '0.3.0',
-           source => "$omega_hosted_release/isaac-0.3.0.gem",
-           provider => 'gem' }
 
   package {'em-websocket':
            ensure => '0.3.8',
@@ -72,10 +66,6 @@ define expand_tarball($dest) {
            ensure => '1.0.1',
            provider => 'gem',
            require => Package['rjr']}
-
-  package {'sourcify':
-           ensure => '0.6.0.rc2',
-           provider => 'gem' }
 
   package {'pry':
            ensure => '0.9.12',
