@@ -2,7 +2,7 @@
 
 Name:    omega
 Summary: Omega Universal simulation framework
-Version: 0.3.0
+Version: 0.4.0
 Release: 1
 Group:   Development/Languages
 License: AGPLv3+
@@ -51,8 +51,8 @@ mv %{buildroot}/%{app_root}/%{name}-server.init %{buildroot}%{_initddir}/%{name}
 
 # TODO copy util executables
 mv %{buildroot}/%{app_root}/bin/omega-server %{buildroot}%{_bindir}/omega-server
-mv %{buildroot}/%{app_root}/bin/backup %{buildroot}%{_bindir}/omega-backup
-mv %{buildroot}/%{app_root}/bin/restore %{buildroot}%{_bindir}/omega-restore
+mv %{buildroot}/%{app_root}/bin/omega-backup %{buildroot}%{_bindir}/omega-backup
+mv %{buildroot}/%{app_root}/bin/omega-restore %{buildroot}%{_bindir}/omega-restore
 rm -rf %{buildroot}/%{app_root}/bin
 
 %pre
@@ -68,8 +68,7 @@ rm -rf %{buildroot}/%{app_root}/bin
 %{_sysconfdir}/cron.d/%{name}-backup
 %dir %{app_root}/
 %{app_root}/lib
-%{app_root}/tests
-%{app_root}/site2
+%{app_root}/site
 %{app_root}/LICENSE
 %{app_root}/COPYING
 
@@ -90,6 +89,9 @@ rm -rf %{buildroot}/%{app_root}/bin
 %{app_root}/README.md
 
 %changelog
+* Sat Sep 14 2013 Mo Morsi <mo@morsi.org> - 0.4.0-1
+- New Release
+
 * Wed Apr 17 2013 Mo Morsi <mo@morsi.org> - 0.3.0-1
 - New Release
 
