@@ -33,17 +33,17 @@ define expand_tarball($dest) {
                      'em-websocket-client', 'amqp', 'pry',
                      'rubygem-curb']
 
-  package {'activesupport':
-            ensure => 'installed',
-            provider => 'gem'}
-
   package {'rjr':
             ensure => 'installed',
             provider => 'gem',
             require => Package['ruby-devel', 'openssl-devel', 'gcc-c++', 'make']}
 
+  package {'activesupport':
+            ensure => 'installed',
+            provider => 'gem',
+            require => Package['rjr']}
+
   package {'em-websocket':
-           ensure => '0.3.8',
            provider => 'gem',
            require => Package['rjr']}
 
@@ -63,7 +63,6 @@ define expand_tarball($dest) {
            require => Package['rjr']}
 
   package {'amqp':
-           ensure => '1.0.1',
            provider => 'gem',
            require => Package['rjr']}
 

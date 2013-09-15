@@ -16,7 +16,7 @@
 #   accessible over json-rpc
 ### END INIT INFO
 
-. /etc/rc.d/init.d/functions
+#. /etc/rc.d/init.d/functions
 
 [ -r /etc/sysconfig/omega-server ] && . /etc/sysconfig/omega-server
 
@@ -47,11 +47,9 @@ start() {
     sleep 1
 
     if [ $retval -eq 0 ] && touch $LOCKFILE ; then
-      echo_success
-      echo
+      echo "success"
     else
-      echo_failure
-      echo
+      echo "failed"
     fi
     return $retval
 }
@@ -61,22 +59,15 @@ stop() {
     if [ -f $PIDFILE ]; then
       kill -TERM `cat $PIDFILE` 
 
-      # XXX requires a 2nd kill after a short delay
-      sleep 1
-      kill -TERM `cat $PIDFILE`
-
       retval=$?
       if [ $retval -eq 0 ] && rm -f $LOCKFILE $PIDFILE; then
-        echo_success
-        echo
+        echo "success"
       else
-        echo_failure
-        echo
+        echo "failed"
       fi
       return $retval
     else
-      echo_failure
-      echo
+      echo "failed"
       return 1
     fi
 }
