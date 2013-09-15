@@ -104,6 +104,7 @@ define expand_tarball($dest) {
          ensure => "file",
          require => Package['httpd']}
 
+   # TODO remove file after
    expand_tarball{'/var/www/omega.tgz':
                   dest  => '/var/www/',
                   require => File['/var/www/omega.tgz'] }

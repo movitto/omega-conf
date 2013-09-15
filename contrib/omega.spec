@@ -2,7 +2,7 @@
 
 Name:    omega
 Summary: Omega Universal simulation framework
-Version: 0.4.0
+Version: 0.4.1
 Release: 1
 Group:   Development/Languages
 License: AGPLv3+
@@ -69,6 +69,7 @@ rm -rf %{buildroot}/%{app_root}/bin
 %dir %{app_root}/
 %{app_root}/lib
 %{app_root}/site
+%exclude %{app_root}/site/tests
 %{app_root}/LICENSE
 %{app_root}/COPYING
 
@@ -87,13 +88,17 @@ rm -rf %{buildroot}/%{app_root}/bin
 %{app_root}/spec
 %{app_root}/Rakefile
 %{app_root}/README.md
+%{app_root}/site/tests
 
 %changelog
+* Sat Sep 14 2013 Mo Morsi <mo@morsi.org> - 0.4.1-1
+- Bumped version
+
 * Sat Sep 14 2013 Mo Morsi <mo@morsi.org> - 0.4.0-1
-- New Release
+- New version
 
 * Wed Apr 17 2013 Mo Morsi <mo@morsi.org> - 0.3.0-1
-- New Release
+- New version
 
 * Mon Sep 10 2012 Mo Morsi <mo@morsi.org> - 0.1.0-1
 - Initial package
