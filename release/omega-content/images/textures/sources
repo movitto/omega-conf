@@ -1,0 +1,9 @@
+jump_gate from http://opengameart.org/sites/default/files/oga-textures/vehl1train2by4.jpg
+greensun from /usr/share/vegastrike/textures/stars/greensun.texture
+planet0 from /usr/share/vegastrike/textures/planets/frigid_mud.texture
+planet1 from /usr/share/vegastrike/textures/planets/carribean1_light.texture
+planet2 from /usr/share/vegastrike/textures/planets/gas_giant2.texture
+planet3 from /usr/share/vegastrike/textures/planets/Lava1.texture
+planet4 from /usr/share/vegastrike/textures/planets/Snow1.texture
+asteroid01 from /usr/share/vegastrike/units/factions/neutral/asteroids/Asteroid.png
+lensflare/*.png from http://threejs.org/examples/textures/lensflare/*.png
