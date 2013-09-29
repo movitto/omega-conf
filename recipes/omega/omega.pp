@@ -99,6 +99,8 @@ define expand_tarball($dest) {
             require => Package['omega'] }
 
 
+   # FIXME outdated not that content has been split out, copy
+   # site from rpm, and content from $omega_public_release
    file {'/var/www/omega.tgz':
          source => "$omega_public_release/static-site.tgz",
          ensure => "file",
