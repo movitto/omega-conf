@@ -1,5 +1,8 @@
 Creating Meshes for Omega
 -------------------------
+
+# Meshes #
+
 Omega renderes entities with webgl via three.js which
 uses its own json format for meshes.
 
@@ -25,6 +28,8 @@ To convert:
 - save the blender project
 - file > export into three.js format (requires plugin above)
 
+# Textures #
+
 Vegastrike textures are in the 'dds' format (even though they
 have a png extension)
 
@@ -33,6 +38,17 @@ $ convert foo.dds foo.png
 
 This also works for cube-based texture sets:
 $ convert foo.cube foo.png
+
+# Compressed Textures #
+
+three.js now has support for compressed textures so dds files:
+https://github.com/mrdoob/three.js/issues/2348
+
+The latest development version of ImageMagick has
+support to convert png files into dds files as well:
+http://www.imagemagick.org/discourse-server/viewtopic.php?f=1&t=23946&start=15#p102574
+
+# Using #
 
 Edit which meshes and textures are used in
 site/source/javascripts/omega/config.js
