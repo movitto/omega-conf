@@ -7,3 +7,5 @@ planet3 from /usr/share/vegastrike/textures/planets/Lava1.texture
 planet4 from /usr/share/vegastrike/textures/planets/Snow1.texture
 asteroid01 from /usr/share/vegastrike/units/factions/neutral/asteroids/Asteroid.png
 lensflare/*.png from http://threejs.org/examples/textures/lensflare/*.png
+hull.png from /usr/share/vegastrike/textures/hull1.bmp
+AeraHull.png from /usr/share/vegastrike/textures/AeraHull2.bmp
