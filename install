@@ -1,0 +1,52 @@
+The following instructions are for manually building/
+installing an instance of Omega from scratch on a
+freshly installed rpm based system. Similar instructions
+are supported on other platforms as well, see the
+(https://github.com/movitto/omega/wiki/Install)[Install]
+document on the Omega wiki for specifics.
+
+# Build Omega
+- sudo yum install git rubygem-rake ruby-devel gcc nodejs
+- gem install middleman i18n
+- git clone http://github.com/movitto/omega
+- git clone http://github.com/movitto/omega-conf
+- git clone http://github.com/movitto/rjr
+- cd omega
+- rake package
+- ln -s ~/omega-conf/release/omega-content/* site/source/
+- rake site:build
+- cd
+
+# Build Omega RPM
+- sudo yum install rpm-build
+- mkdir -p rpmbuild/SOURCES
+- ln -s ~/omega/pkg/omega-0.4.1.tgz ~/omega-conf/contrib/omega-server.init \
+        ~/omega-conf/contrib/omega-backup.cron ~/rpmbuild/SOURCES
+- rpmbuild -ba omega-conf/contrib/omega.spec
+
+# Install Omega Deps
+- sudo yum install gcc-c++ openssl-devel libcurl-devel
+- sudo gem install em-http-request --version 1.0.3
+- sudo gem install rjr curb eventmachine_httpserver em-websocket
+              em-websocket-client amqp
+
+# Install Omega
+- sudo yum install rpmbuild/RPMS/noarch/omega-0.4.1-1.noarch.rpm \
+                   rpmbuild/RPMS/noarch/omega-doc-0.4.1-1.noarch.rpm
+- cd /var/www/
+- sudo cp -r ~/omega/site/build omega
+- cd
+
+# Start Omega
+- sudo setenforce 0 # not ideal but this saves us a few steps
+- sudo service rabbitmq-server start
+- sudo cp ~/omega-conf/release/httpd.conf /etc/httpd/conf.d/omega.conf
+- sudo firewall-cmd --add-port=80/tcp
+- sudo service httpd start
+- sudo service omega-server start
+
+# Seed Data
+- TBD...
+
+# Access Omega
+- Open a web browser and navigate to http://<ip-address>/womega
