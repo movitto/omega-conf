@@ -34,8 +34,18 @@ document on the Omega wiki for specifics.
 - sudo yum install rpmbuild/RPMS/noarch/omega-0.4.1-1.noarch.rpm \
                    rpmbuild/RPMS/noarch/omega-doc-0.4.1-1.noarch.rpm
 - cd /var/www/
-- sudo cp -r ~/omega/site/build omega
+- sudo cp -r ~/omega/site/build omega-0.4.1
+- sudo ln -s omega-0.4.1 omega
 - cd
+
+# Configure Omega
+- /etc/omega.yml - omega-server config
+- /var/www/omega/javascripts/config.js - web frontend config
+
+At a minimum for a typical production install make sure to change passwords
+omega.yml and server location in config.js. Other options such as user
+registration and email settings may require additional config depending
+on your setup.
 
 # Start Omega
 - sudo setenforce 0 # not ideal but this saves us a few steps
@@ -46,7 +56,46 @@ document on the Omega wiki for specifics.
 - sudo service omega-server start
 
 # Seed Data
-- TBD...
+/usr/share/omega/examples contains various scripts to seed and run
+a universe. *Note* If you update the omega config in /etc/omega.yml,
+to change the admin password, server location, or other, make sure that
+change is reflected in the script you run.
+- export RUBYLIB='/usr/share/omega/lib'
+- /usr/share/omega/examples/universes/small.rb
+- /usr/share/omega/examples/users.rb Anubis sibuna Athena regular_user
 
 # Access Omega
 - Open a web browser and navigate to http://<ip-address>/womega
+
+# Updating Omega:
+Assuming the previous was done to build/install Omega, the following
+will update a running instance to the latest HEAD
+
+- # cd into omega, omega-conf, and rjr, and run:
+  - git pull
+- cd omega
+- rake package
+- rake site:build
+- cd
+- # If the version of the package changed (see the omega Rakefile or pkg/ dir)
+  - rm rpmbuild/SOURCES/omega-0.4.1.tgz
+  - ln -s ~/omega/pkg/omega-0.5.1.tgz ~/rpmbuild/SOURCES/
+- rpmbuild -ba omega-conf/contrib/omega.spec
+
+# Updating an Omega Install:
+- sudo service omega-server stop
+- sudo yum remove omega omega-doc
+- sudo gem install rjr
+- sudo yum install rpmbuild/RPMS/noarch/omega-0.5.1-1.noarch.rpm \
+                   rpmbuild/RPMS/noarch/omega-doc-0.5.1-1.noarch.rpm
+- sudo service omega-server start
+- cd /var/www/
+- sudo rm omega
+- sudo cp ~/omega/site/build omega-0.5.1
+- sudo ln -s omega-0.5.1 omega
+- sudo service httpd restart
+
+# Removing an Omega Install:
+- sudo yum remove omega omega-doc
+- sudo rm -rf /var/www/omega*
+- sudo rm -rf /etc/omega.yml
