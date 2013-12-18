@@ -2,7 +2,7 @@
 
 Name:    omega
 Summary: Omega Universal simulation framework
-Version: 0.4.1
+Version: 0.5.1
 Release: 1
 Group:   Development/Languages
 License: AGPLv3+
