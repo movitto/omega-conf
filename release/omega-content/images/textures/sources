@@ -8,3 +8,5 @@ asteroid01 from /usr/share/vegastrike/units/factions/neutral/asteroids/Asteroid.
 lensflare/*.png from http://threejs.org/examples/textures/lensflare/*.png
 hull.png from /usr/share/vegastrike/textures/hull1.bmp
 AeraHull.png from /usr/share/vegastrike/textures/AeraHull2.bmp
+sun.jpg from http://www.brusheezy.com/textures/49324-surface-of-the-sun-texture
+  with modifications to make seemless
