@@ -25,7 +25,7 @@ stable and/or dev/testing revisions desired
 # Build Omega RPM
 - sudo yum install rpm-build
 - mkdir -p rpmbuild/SOURCES
-- ln -s ~/omega/pkg/omega-0.5.2.tgz ~/omega-conf/contrib/omega-server.init \
+- ln -s ~/omega/pkg/omega-0.6.1.tgz ~/omega-conf/contrib/omega-server.init \
         ~/omega-conf/contrib/omega-backup.cron ~/rpmbuild/SOURCES
 - rpmbuild -ba omega-conf/contrib/omega.spec
 
@@ -36,11 +36,11 @@ stable and/or dev/testing revisions desired
               em-websocket-client amqp
 
 # Install Omega
-- sudo yum install rpmbuild/RPMS/noarch/omega-0.5.2-1.noarch.rpm \
-                   rpmbuild/RPMS/noarch/omega-doc-0.5.2-1.noarch.rpm
+- sudo yum install rpmbuild/RPMS/noarch/omega-0.6.1-1.noarch.rpm \
+                   rpmbuild/RPMS/noarch/omega-doc-0.6.1-1.noarch.rpm
 - cd /var/www/
-- sudo cp -r ~/omega/site/build omega-0.5.2
-- sudo ln -s omega-0.5.2 omega
+- sudo cp -r ~/omega/site/build omega-0.6.1
+- sudo ln -s omega-0.6.1 omega
 - cd
 
 # Configure Omega
@@ -83,8 +83,8 @@ will update a running instance to the latest HEAD
 - rake site:build
 - cd
 - # If the version of the package changed (see the omega Rakefile or pkg/ dir)
-  - rm rpmbuild/SOURCES/omega-0.5.2.tgz
-  - ln -s ~/omega/pkg/omega-0.6.1.tgz ~/rpmbuild/SOURCES/
+  - rm rpmbuild/SOURCES/omega-0.6.1.tgz
+  - ln -s ~/omega/pkg/omega-0.7.1.tgz ~/rpmbuild/SOURCES/
 - rpmbuild -ba omega-conf/contrib/omega.spec
 
 # Updating an Omega Install:
@@ -100,6 +100,7 @@ will update a running instance to the latest HEAD
 - cd /var/www/
 - sudo rm omega
 - sudo cp ~/omega/site/build omega-0.6.1
+- sudo chown -R apache.apache omega-0.6.1
 - sudo ln -s omega-0.6.1 omega
 - set config options in omega-0.6.1/javascripts/config.js
 - sudo service httpd restart
