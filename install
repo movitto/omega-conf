@@ -57,6 +57,7 @@ on your setup.
 - sudo service rabbitmq-server start
 - sudo cp ~/omega-conf/release/httpd.conf /etc/httpd/conf.d/omega.conf
 - sudo firewall-cmd --add-port=80/tcp
+- sudo firewall-cmd --add-port=8080/tcp
 - sudo service httpd start
 - sudo service omega-server start
 
