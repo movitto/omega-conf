@@ -1,5 +1,5 @@
 research1 from '/usr/share/vegastrike/units/installations/Research/research.bfxm'
-asteroids1.js from '/usr/share/vegastrike/units/factions/neutral/asteroids/asteroid.bfxm'
+asteroids[1-5].js from '/usr/share/vegastrike/units/factions/neutral/asteroids/asteroid.bfxm'
 wormhole_generator from https://skydrive.live.com/?cid=5d0715049236d05b&id=5D0715049236D05B!113#cid=5D0715049236D05B&id=5D0715049236D05B!269 (http://www.solcommand.com)
 Leonidas from /usr/share/vegastrike/units/vessels/Leonidas
 Agasicles from /usr/share/vegatrike/units/vessles/Agasicles
