@@ -10,3 +10,4 @@ hull.png from /usr/share/vegastrike/textures/hull1.bmp
 AeraHull.png from /usr/share/vegastrike/textures/AeraHull2.bmp
 sun.jpg from http://www.brusheezy.com/textures/49324-surface-of-the-sun-texture
   with modifications to make seemless
+sun-0000FF.jpg, sun-00FF00.jpg, sun-FF0000.jpg modified from sun.jpg to change colors
