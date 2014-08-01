@@ -7,3 +7,4 @@ Sickle from /usr/share/vegatrike/units/vessles/Sickle
 Agesipolis from /usr/share/vegatrike/units/vessles/Agesipolis
 medical from '/usr/share/vegastrike/units/installations/Medical'
 mining from '/usr/share/vegastrike/units/installations/MiningBase'
+missile from '/usr/share/vegastrike/meshes/missile.bxfm'
