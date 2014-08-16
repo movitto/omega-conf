@@ -20,7 +20,7 @@ On Fedora I downloaded these via yum:
 The meshes are bxfm files located in the /usr/share/vegastrike dir
 
 To convert:
-- copy locally (important)
+- copy locally (important!!!)
 - run: /usr/libexec/vegastrike/mesher ./foo.bxfm foo.obj boc
   where foo.bxfm is the mesh you copied and foo.obj is the destination
   obj file to write

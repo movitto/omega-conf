@@ -80,6 +80,7 @@ will update a running instance to the latest HEAD
 - # cd into omega, omega-conf, and rjr, and run:
   - git pull
 - cd omega
+- Bump release in Rakefile if desired
 - rake package
 - rake site:build
 - cd
