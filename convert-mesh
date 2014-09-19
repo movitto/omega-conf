@@ -52,3 +52,7 @@ http://www.imagemagick.org/discourse-server/viewtopic.php?f=1&t=23946&start=15#p
 
 Edit which meshes and textures are used in
 site/source/javascripts/omega/config.js
+
+# TODO #
+ - Direct blender BFXM import script based on:
+   https://svn.code.sf.net/p/vegastrike/code/trunk/vegastrike/objconv/mesher/from_BFXM.cpp

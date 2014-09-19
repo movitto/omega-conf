@@ -9,3 +9,4 @@ medical from '/usr/share/vegastrike/units/installations/Medical'
 mining from '/usr/share/vegastrike/units/installations/MiningBase'
 missile from '/usr/share/vegastrike/meshes/missile.bxfm'
 Nicander from /usr/share/vegastrike/units/vessels/Nicander
+missile-bay.json original creation (see .blend file in dev dir)
