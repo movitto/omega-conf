@@ -36,11 +36,11 @@ stable and/or dev/testing revisions desired
               em-websocket-client amqp
 
 # Install Omega
-- sudo yum install rpmbuild/RPMS/noarch/omega-0.7.1-1.noarch.rpm \
-                   rpmbuild/RPMS/noarch/omega-doc-0.7.1-1.noarch.rpm
+- sudo yum install rpmbuild/RPMS/noarch/omega-0.8.2-1.noarch.rpm \
+                   rpmbuild/RPMS/noarch/omega-doc-0.8.2-1.noarch.rpm
 - cd /var/www/
-- sudo cp -r ~/omega/site/build omega-0.7.1
-- sudo ln -s omega-0.7.1 omega
+- sudo cp -r ~/omega/site/build omega-0.8.2
+- sudo ln -s omega-0.8.2 omega
 - cd
 
 # Configure Omega
@@ -85,8 +85,8 @@ will update a running instance to the latest HEAD
 - rake site:build
 - cd
 - # If the version of the package changed (see the omega Rakefile or pkg/ dir)
-  - rm rpmbuild/SOURCES/omega-0.7.1.tgz
-  - ln -s ~/omega/pkg/omega-0.8.1.tgz ~/rpmbuild/SOURCES/
+  - rm rpmbuild/SOURCES/omega-0.8.1.tgz
+  - ln -s ~/omega/pkg/omega-0.8.2.tgz ~/rpmbuild/SOURCES/
 - rpmbuild -ba omega-conf/contrib/omega.spec
 
 # Updating an Omega Install:
@@ -94,17 +94,17 @@ will update a running instance to the latest HEAD
 - sudo service omega-server stop
 - sudo yum remove omega omega-doc
 - sudo gem install rjr
-- sudo yum install rpmbuild/RPMS/noarch/omega-0.7.1-1.noarch.rpm \
-                   rpmbuild/RPMS/noarch/omega-doc-0.7.1-1.noarch.rpm
+- sudo yum install rpmbuild/RPMS/noarch/omega-0.8.2-1.noarch.rpm \
+                   rpmbuild/RPMS/noarch/omega-doc-0.8.2-1.noarch.rpm
 - sudo cp /etc/omega.yml.rpmsave /etc/omega.yml # restore configuration
 - sudo chown omega.omega /etc/omega.yml 
 - sudo service omega-server start
 - cd /var/www/
 - sudo rm omega
-- sudo cp ~/omega/site/build omega-0.7.1
-- sudo chown -R apache.apache omega-0.7.1
-- sudo ln -s omega-0.7.1 omega
-- set config options in omega-0.7.1/javascripts/config.js
+- sudo cp ~/omega/site/build omega-0.8.2
+- sudo chown -R apache.apache omega-0.8.2
+- sudo ln -s omega-0.8.2 omega
+- set config options in omega-0.8.2/javascripts/config.js
 - sudo service httpd restart
 
 - reseed server / restore backup
