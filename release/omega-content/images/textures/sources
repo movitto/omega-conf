@@ -13,6 +13,10 @@ hull.png from /usr/share/vegastrike/textures/hull1.bmp
 AeraHull.png from /usr/share/vegastrike/textures/AeraHull2.bmp
 sun.jpg from http://www.brusheezy.com/textures/49324-surface-of-the-sun-texture
   with modifications to make seemless
+sun-grayscale2.png generated from modified grayscale of sun.jpg
+sun-halo3.png generated from http://commons.wikimedia.org/wiki/File:The_Sun_by_the_Atmospheric_Imaging_Assembly_of_NASA%27s_Solar_Dynamics_Observatory_-_20100819.jpg
+  cropped to remove center, edited
+sun-halo-shift.png is an original creation
 stars/* modified from sun.jpg to change colors
 nicander.png from /usr/share/vegastrike/units/vessels/Nicander
 indicator.png is an original creation
